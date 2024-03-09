@@ -13,7 +13,7 @@ To run the Auction Site locally on your machine, follow these steps:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/me50/mijwad7/tree/web50/projects/2020/x/commerce
+    git clone https://github.com/mijwad7/commerce
     ```
 
 2. Navigate to the project directory:
