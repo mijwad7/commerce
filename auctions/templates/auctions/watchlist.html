@@ -1,0 +1,28 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Watchlist</h2>
+
+    <ul>
+        {% for listing in listings %}
+        <div style="background-color: #e3f6f5;" class="card text-center border-success">
+            <div class="card-header">
+                <h2>{{ listing.title }}</h2>
+            </div>
+            <div class="card-body">
+              <img src="{{ listing.image }}" alt="">
+              {% if listing.highest_bid %}
+              <h3 class="card-text">${{ listing.highest_bid.bid_amount }}</h3>
+              {% else %}
+              <h3 class="card-text">${{ listing.starting_bid }}</h3>
+              {% endif %}
+              <a href="{% url 'listing' listing.id %}" class="btn btn-primary">Details</a>
+            </div>
+            <div class="card-footer">
+              {{ listing.description }}
+            </div>
+          </div>
+          <br>
+        {% endfor %}
+    </ul>
+{% endblock %}

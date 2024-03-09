@@ -1,0 +1,73 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Listing: {{ listing.title }}</h2>
+
+<img src="{{ listing.image }}" alt="">
+<br>
+<br>
+<p style="font-size: large;">{{ listing.description }}</p>
+{% if listing.isActive == False and user == highest_bid.bidder %}
+<div style="font-size: xx-large; text-align:center" class="alert alert-success" role="alert">
+    You have won the auction for ${{ highest_bid.bid_amount }}!
+  </div>
+{% else %}
+{% if highest_bid %}
+<h2>${{ highest_bid.bid_amount }}</h2>
+{% else %}
+<h2>${{ listing.starting_bid }}</h2>
+{% endif %}
+{% if user == listing.owner %}
+    <form method="post" action="{% url 'close_auction' listing.id %}">
+        {% csrf_token %}
+      
+        <input style="width: fit-content;" type="submit" value="Close Bid" class="btn btn-danger">
+    </form>
+{% elif user.is_authenticated %}
+<form method="post" action="{% url 'listing' listing.id %}">
+    {% csrf_token %}
+    {{ form }}
+    <br>
+    <br>
+    <input style="width: fit-content;" type="submit" value="Place Bid" class="btn btn-primary">
+</form>
+<br>
+<form action="{% url 'watchlist' listing.id %}" method="post">
+    {% csrf_token %}
+    {% if listing in request.user.watchlist.all %}
+        <input style="width: fit-content;" type="submit" value="Remove from watchlist" class="btn btn-danger">
+    {% else %}
+        <input style="width: fit-content;" type="submit" value="Add to watchlist" class="btn btn-primary">
+    {% endif %}
+</form>
+{% endif %}
+<br>
+<h5>Details:</h5>
+<ul style="font-size: large;">
+    <li>Listed by: {{ listing.owner }}</li>
+    <li>Category: {{ listing.get_category_display }}</li>
+    <li>{{ bids }} bid(s) so far</li>
+    {% if user == highest_bid.bidder %}
+        <li>Your bid is the highest bid</li>
+    {% endif %}
+</ul>
+{% endif %}
+<h2>Comments</h2>
+<div class="card">
+    {% if comments %}
+        {% for comment in comments %}
+        <div style="border-style: solid; border-width: 1px; border-color:#272343; background-color:#e3f6f5" class="card-body">
+        <p style="font-weight: bold;">{{ comment.commenter }}:</p>{{ comment.comment }}
+        </div>
+        {% endfor %}
+    {% else %}
+    <div style="border-style: solid; border-width: 1px; border-color:#272343; background-color:#e3f6f5" class="card-body">
+        No comments yet
+    </div>
+    {% endif %}
+</div>
+<br>
+{% if user.is_authenticated %}
+<a style="font-size: x-large;" href="{% url 'add_comment' listing.id %}">Add Comment</a>
+{% endif %}
+{% endblock %} 

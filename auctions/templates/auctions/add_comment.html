@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+{% if user.is_authenticated %}
+<form action="{% url 'comment' listing.id %}" method="post">
+    {% csrf_token %}
+    {{ comment_form }}
+    <br>
+    <br>
+    <input style="width: fit-content;" type="submit" value="Add Comment" class="btn btn-primary">
+</form>
+{% endif %}
+{% endblock %}
