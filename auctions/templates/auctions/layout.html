@@ -8,19 +8,14 @@
         <link href="{% static 'auctions/styles.css' %}" rel="stylesheet">
         <style>
             body {
-                background-color: #c7e3e3;
                 color: #272343;
                 padding-left: 40px;
                 padding-right: 40px;
             }
-            input {
-                width: 100%;
-                background-color: #e3f6f5;
-                border-style: none;
-            }
         </style>
     </head>
     <body>
+        <div class="container">
         <h1>Auctions</h1>
         <div>
             {% if user.is_authenticated %}
@@ -59,5 +54,6 @@
         
         {% block body %}
         {% endblock %}
+    </div>
     </body>
 </html>
